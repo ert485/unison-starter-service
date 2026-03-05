@@ -29,10 +29,7 @@ setup:
 		echo "Initializing local codebase at .unison"; \
 		ucm --codebase-create .unison --exit; \
 	fi
-	@if [ ! -f .unison/.setup-complete ]; then \
-		echo "Pulling project from Unison Share (@ert485/starter-service)"; \
-		ucm transcript.in-place -c .unison scripts/setup.md && touch .unison/.setup-complete; \
-	fi
+	ucm transcript.in-place -c .unison scripts/setup.md
 
 auth: setup
 	@if [ "$(FORCE_AUTH)" = "1" ]; then \
