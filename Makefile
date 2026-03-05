@@ -30,7 +30,7 @@ setup:
 		ucm --codebase-create .unison --exit; \
 	fi
 	@if [ ! -f .unison/.setup-complete ]; then \
-		echo "Running one-time setup transcript"; \
+		echo "Pulling project from Unison Share (@ert485/starter-service)"; \
 		ucm transcript.in-place -c .unison scripts/setup.md && touch .unison/.setup-complete; \
 	fi
 

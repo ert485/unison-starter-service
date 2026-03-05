@@ -38,21 +38,17 @@ Expected `make testApi` output (happy path):
 [{"eventType":"exampleEvent","message":"Event of type: exampleEvent"}]
 ```
 
+## How it works
+
+The Unison codebase on [Unison Share](https://share.unison-lang.org/@ert485/starter-service) is the source of truth — not the `.u` files. The `eventlog.u` file is kept as a scratch/reference file, but the deploy workflow pulls code from Share, not from the text file.
+
+To modify the service, use UCM to edit code in the codebase, then `push` to Share.
+
 ## Project Layout
 
-- `eventlog.u`: Minimal service implementation
-- `scripts/setup.md`: UCM transcript for one-time project/library setup
-- `scripts/deployLocal.md`: UCM transcript for local deploy
+- `eventlog.u`: Scratch/reference file (not used in deploy)
+- `scripts/setup.md`: UCM transcript — pulls project from Unison Share
+- `scripts/deployLocal.md`: UCM transcript — runs local deploy
 - `scripts/auth.md`: UCM transcript for interactive cloud login
-- `docs/discovery.md`: API discovery transcript commands
-- `docs/discovery.output.md`: Raw UCM discovery output
-- `docs/discovery.condensed.md`: Condensed discovery notes
-- `docs/api-reference.md`: Curated API reference
-- `docs/api-reference.output.md`: UCM output for API reference checks
+- `docs/`: API discovery notes and reference docs
 - `CLAUDE.md`: Practical gotchas and implementation notes
-
-Layout overview:
-
-- define routes in `eventlog.u`
-- deploy with a transcript
-- smoke-test with curl via `make testApi`

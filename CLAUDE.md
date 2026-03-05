@@ -92,17 +92,24 @@ event = Event eventType msg
 - Run with `ucm transcript.in-place -c .unison file.md` to execute against your codebase
 - Run with `ucm transcript.fork -c .unison file.md` for sandboxed testing
 
+## Source of Truth
+
+The Unison codebase on [Unison Share](https://share.unison-lang.org/@ert485/starter-service) is canonical — not `eventlog.u`. The `.u` file is a scratch/reference file only.
+
+- To modify the service: edit in UCM, then `push` to Share
+- To deploy: `make deployLocal` (pulls from Share, then runs)
+- `eventlog.u` is NOT loaded/added during deploy
+
 ## Project Setup Commands (UCM)
 
+For a fresh clone:
 ```
-project.create-empty starter-service
-pull @unison/cloud-start/releases/latest
-lib.install @unison/cloud
-lib.install @unison/routes
-auth.login          -- interactive, opens browser
-load eventlog.u
-add
-run deployLocal
+make deployLocal    -- creates codebase, pulls from Share, auths, deploys
+```
+
+To push changes back to Share after editing in UCM:
+```
+push @ert485/starter-service
 ```
 
 ## Installed Library Versions (as of setup)
@@ -116,12 +123,13 @@ run deployLocal
 | File | Purpose |
 |------|---------|
 | `README.md` | Primary onboarding entrypoint and quickstart |
-| `eventlog.u` | Service source — typechecked and added to codebase |
+| `eventlog.u` | Scratch/reference file (not used in deploy) |
+| `scripts/setup.md` | UCM transcript — pulls project from Unison Share |
 | `scripts/auth.md` | UCM transcript for interactive `auth.login` |
-| `scripts/deployLocal.md` | UCM transcript to load/add/run local service |
+| `scripts/deployLocal.md` | UCM transcript — runs local deploy |
 | `docs/discovery.md` | UCM `find`/`view` commands (runnable transcript) |
 | `docs/discovery.output.md` | Raw UCM output from discovery |
 | `docs/discovery.condensed.md` | Key signatures extracted from discovery |
 | `docs/api-reference.md` | Reference doc with typechecked code example (runnable transcript) |
 | `docs/api-reference.output.md` | UCM output confirming examples typecheck |
-| `.unison/` | UCM-managed codebase |
+| `.unison/` | Local UCM codebase (gitignored — reconstructed via `pull` from Share) |
