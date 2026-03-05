@@ -1,0 +1,36 @@
+type Event = { eventType : Text, message : Text }
+
+createStorage : '{Exception, Cloud} (OrderedTable Instant Event)
+createStorage = do
+  db = Database.named "eventlog"
+  Database.assign db (!Environment.default)
+  OrderedTable.named db "events" Universal.ordering
+
+eventToJson : Event -> Json
+eventToJson = cases Event t m ->
+  Json.object [("eventType", Json.text t), ("message", Json.text m)]
+
+routes : OrderedTable Instant Event -> '{Route, Exception, Remote} ()
+routes table =
+  use Route <|>
+  postEvent : '{Route, Exception, Remote} ()
+  postEvent = do
+    eventType = Route.route POST (s "events" / Parser.text)
+    now = now!
+    event = Event eventType ("Event of type: " ++ eventType)
+    OrderedTable.write table now event
+    respond.ok.text "stored"
+  getEvents : '{Route, Exception, Remote} ()
+  getEvents = do
+    Route.noCapture GET (s "events")
+    entries = OrderedTable.toStream table |> Stream.toList
+    jsonEntries = List.map (entry -> eventToJson (at2 entry)) entries
+    respond.ok.json (Json.array jsonEntries)
+  postEvent <|> getEvents
+
+deployLocal : '{IO, Exception} URI
+deployLocal = unison_cloud_27_3_0.Cloud.main.local.serve do
+  table = !createStorage
+  serviceHash = deployHttp !Environment.default (Route.run (routes table))
+  name = ServiceName.named "event-log"
+  ServiceName.assign name serviceHash
