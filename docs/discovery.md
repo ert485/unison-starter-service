@@ -24,4 +24,8 @@ Key finds that informed the eventlog service implementation.
 > view Route.noCapture
 > view Route.run
 > view examples.todoApp.routes.todoService
+> find decodeJson
+> find Decoder.text
+> find fromJson
+> find object.at
 ```

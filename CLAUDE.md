@@ -1,4 +1,5 @@
 # Unison Cloud HTTP Service — Development Notes
+Notes that Claude added:
 
 ## Critical: Route is an ability, NOT a parameterized type
 
@@ -54,6 +55,7 @@ Do NOT wrap the outer function in `do` — that double-thunks and gives "I didn'
 | `OrderedTable.scan` / `OrderedTable.scan.tx` | `OrderedTable.toStream : OrderedTable k v -> '{Remote, Stream (k, v)} ()` |
 | `Instant.epochSecond` | Does not exist. Use `Instant` directly as key (it has ordering). `fromEpochSeconds : Int -> Instant` goes the other direction. |
 | `ok.text` / `ok.json` | `respond.ok.text` / `respond.ok.json` (both found via `find`) |
+| `Route.body` / `Route.requestBody` | `Route.request.body.decodeJson : '{g, Decoder} a ->{g, Route, Exception} a` (reads + parses request body) |
 
 ## High: `Cloud.main.local.serve` has two gotchas
 
@@ -128,8 +130,12 @@ push @ert485/starter-service
 | `scripts/auth.md` | UCM transcript for interactive `auth.login` |
 | `scripts/deployLocal.md` | UCM transcript — runs local deploy |
 | `docs/discovery.md` | UCM `find`/`view` commands (runnable transcript) |
-| `docs/discovery.output.md` | Raw UCM output from discovery |
 | `docs/discovery.condensed.md` | Key signatures extracted from discovery |
 | `docs/api-reference.md` | Reference doc with typechecked code example (runnable transcript) |
-| `docs/api-reference.output.md` | UCM output confirming examples typecheck |
 | `.unison/` | Local UCM codebase (gitignored — reconstructed via `pull` from Share) |
+
+## Notes that Erik added:
+
+- When the AI is about to run a transcripts, I often forget to kill other ucm processes (port occupied)
+- Codex struggles to understand mindshift changes in Unison (e.g. the .u files are scratch pads, not source of truth)
+- Claude Code isn't able to handle running interactive process as well as Codex, I'm having to run ucm outside of Claude Code

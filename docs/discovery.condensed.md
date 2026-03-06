@@ -21,6 +21,7 @@ Route.noCapture : Method -> Parser () b ->{Route} b
 Route.run       : '{g, Route, Exception} () -> HttpRequest ->{g, Exception} HttpResponse
 respond.ok.text : Text ->{Route} ()
 respond.ok.json : Json ->{Route} ()
+Route.request.body.decodeJson : '{g, Decoder} a ->{g, Route, Exception} a
 ```
 
 ## Cloud / Deploy
@@ -46,7 +47,10 @@ ServiceName.assign : ServiceName a b -> ServiceHash a b ->{Exception, Cloud} URI
 ## JSON
 
 ```
-Json.object : [(Text, Json)] -> Json
+Json.object        : [(Text, Json)] -> Json
+Decoder.text       : '{Decoder} Text
+Decoder.object.at  : Text -> '{g, Decoder} a -> '{g, Decoder} a
+Decoder.object.at! : Text -> '{g, Decoder} a ->{g, Decoder} a
 ```
 
 ## Time

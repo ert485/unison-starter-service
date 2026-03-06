@@ -1,7 +1,6 @@
 .PHONY: help setup auth deployLocal testApi clean clean-all
 
 SERVICE_URL ?= http://localhost:8080/s/event-log
-EVENT_TYPE ?= exampleEvent
 UCM_CREDENTIALS ?= $(HOME)/.local/share/unisonlanguage/credentials.json
 UCM_AUTH_SKEW_SECONDS ?= 60
 
@@ -11,15 +10,14 @@ help:
 	@echo "  2) In another terminal while it runs: make testApi"
 	@echo ""
 	@echo "Targets:"
-	@echo "  make setup        # Create local codebase and run one-time project/library setup"
+	@echo "  make setup        # Create local codebase and pull project from Unison Share"
 	@echo "  make auth         # Login only if needed (opens browser when credentials are missing/expired)"
-	@echo "  make deployLocal  # Load code, add definitions, and run local service"
+	@echo "  make deployLocal  # Pull from Share and run local service"
 	@echo "  make testApi      # Smoke test local /events endpoints"
 	@echo "  make clean        # Remove local project codebase (.unison)"
 	@echo "  make clean-all    # DANGEROUS: remove local .unison and global ~/.unison/v2 state"
 	@echo ""
 	@echo "Options:"
-	@echo "  EVENT_TYPE=name   # Event type used for POST /events/<eventType>"
 	@echo "  UCM_AUTH_SKEW_SECONDS=n  # Treat auth as expired n seconds early (default: 60)"
 	@echo "  FORCE_AUTH=1      # Force browser login even if local credentials exist"
 	@echo "  CONFIRM=1         # Required for clean-all"
@@ -46,7 +44,9 @@ deployLocal: auth
 
 testApi:
 	curl -i --max-time 10 $(SERVICE_URL)/events
-	curl -i --max-time 10 -X POST $(SERVICE_URL)/events/$(EVENT_TYPE)
+	curl -i --max-time 10 -X POST -H "Content-Type: application/json" \
+		-d '{"eventType":"exampleEvent","message":"This is a test event"}' \
+		$(SERVICE_URL)/events
 	curl -i --max-time 10 $(SERVICE_URL)/events
 
 clean:

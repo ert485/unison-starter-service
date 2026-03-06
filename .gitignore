@@ -4,5 +4,8 @@
 .unison/
 .unisonHistory
 
+# Generated UCM transcript output
+*.output.md
+
 # Local assistant/editor state
 .claude/
