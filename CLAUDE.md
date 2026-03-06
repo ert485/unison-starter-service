@@ -62,3 +62,4 @@ See `README.md` for project layout. Key files for AI context: `eventlog.u` (refe
 - When the AI is about to run a transcripts, I often forget to kill other ucm processes (port occupied)
 - Codex struggles to understand mindshift changes in Unison (e.g. the .u files are scratch pads, not source of truth)
 - Claude Code isn't able to handle running interactive process as well as Codex, I'm having to run ucm outside of Claude Code
+- Claude Code sometimes uses `>>` (append redirect) in Bash to write files, which triggers a permission prompt even with accept edits enabled — use the Write/Edit tools instead
