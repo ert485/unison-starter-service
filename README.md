@@ -25,11 +25,11 @@ Notes:
 Expected `make testApi` output (happy path):
 
 1. First `GET /events` returns `HTTP/1.1 200 OK` with body `[]` on a fresh run
-2. `POST /events` with a JSON body returns `HTTP/1.1 200 OK` with body `stored`
+2. `POST /events` with a JSON body returns `HTTP/1.1 200 OK` with body `stored event`
 3. Final `GET /events` returns `HTTP/1.1 200 OK` with a JSON array containing the inserted event, for example:
 
 ```json
-[{"eventType":"signup","message":"A user signed up"}]
+[{"eventType":"exampleEvent","message":"This is a test event"}]
 ```
 
 ## How it works
